@@ -11,7 +11,7 @@ This is forked from here: https://socialwall.me/en/capture-stream-in-real-time-f
 Update fb-live-poll.png using PSD
 
 **Step 2:** 
-Copy/Paste Access Token to index.html from here using the Page you will be doing the live video from:** https:**//developers.facebook.com/tools/explorer
+Copy/Paste Access Token to index.html from here using the Page you will be doing the live video from:** https://developers.facebook.com/tools/explorer
 
 **Step 3:** 
 Copy/Paste the PageID in index.html
@@ -20,7 +20,7 @@ Copy/Paste the PageID in index.html
 Launch a new Live Video (but do not go live)
 
 **Step 5:** 
-Open OBS and paste in FB Live Stream Key (see instructions here:** https:**//socialwall.me/en/capture-stream-in-real-time-facebook-live-reactions/)
+Open OBS and paste in FB Live Stream Key (see instructions here: https://socialwall.me/en/capture-stream-in-real-time-facebook-live-reactions/)
 
 **Step 6:** 
 Select BrowserSource and set to the index.html file
