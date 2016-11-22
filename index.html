@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Facebook Reactions</title>
+	<link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
+
+	<style>
+		html {
+		  box-sizing: border-box;
+          width: 100%;
+          height: 100%;
+		}
+		*, *:before, *:after {
+		  box-sizing: inherit;
+		}
+		body{
+			margin: 0;
+            background: #073759; /* IMAGE NAME HERE */
+            color: #FFF;
+            width: 100%;
+            height: 100%;
+            font-family: "Titillium Web",Arial,sans-serif;
+		}
+		#wrap{
+			position: relative;
+            background: #073759 url('fb-live-poll.jpg') top center no-repeat; /* IMAGE NAME HERE */
+            background-size: contain;
+            margin: 0px auto;
+			width: 1280px;
+			height: 720px;
+		}
+		.cover{
+			padding: 20px 80px;
+			position: absolute;
+			width: 1280px;
+			height: 720px;
+			top: 0;
+			left: 0;
+			z-index: 10;
+		}
+        .tc { text-align: center; font-size: 3rem; font-weight: bold; color #000;}
+        .wf { 
+	        width: 30%;
+			height: 100px;
+			font-weight: 600;
+		    font-size: 90px;
+		    line-height: 1;
+		    text-align: left;
+		}
+        .likes {
+		    position: absolute;
+		    bottom: 52px;
+		    left: 253px;
+        }
+
+        .love {
+		    position: absolute;
+		    bottom: 52px;
+		    left: 886px;
+        }
+
+	</style>
+</head>
+<body>
+
+	<div id="wrap">
+		<div class="tc wf likes"></div>
+	    <div class="tc wf love"></div>
+	</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.16.6/lodash.min.js"></script>
+<script>
+"use strict";
+var access_token = 'EAACEdEose0cBAMXX2teBz67Am7mlzZAGpwZCSgToKjri34ME0RUxUjGWE3UjzKyFHIpbMIwf69SdxZBZB3umMgdcgafVIZBJuXJepFrG8Vqkxbo1ayjTq0A3L9BtszQ3eEZBtpRB2vLVk10O5MwsRfw2f7VzNTSsZCTjyZAhIZCQUZAAZDZD'; //Paste your Access Token here
+var pageID = '499499086744737'; //Paste your Facebook Page ID here
+var postID = '1461268290567807'; //Paste your live's Post ID here
+
+var refreshTime = 5; // in seconds
+var defaultCount = 0; // default count to start with
+
+var reactions = ['LIKE', 'LOVE'].map(function (e) {
+    var code = 'reactions_' + e.toLowerCase();
+    return 'reactions.type(' + e + ').limit(0).summary(total_count).as(' + code + ')'
+}).join(',');
+
+var	v1 = $('.likes'),
+	v2 = $('.love');
+
+function refreshCounts() {
+        var url = 'https://graph.facebook.com/v2.8/?ids=' + pageID + "_" + postID + '&fields=' + reactions + '&access_token=' + access_token;
+        console.log(url);
+	$.getJSON(url, function(res){
+		console.log(res);
+		v1.text(defaultCount + res[pageID+"_"+postID].reactions_like.summary.total_count);
+		v2.text(defaultCount + res[pageID+"_"+postID].reactions_love.summary.total_count);
+	});
+}
+
+setInterval(refreshCounts, refreshTime * 1000);
+refreshCounts();
+</script>
+
+</body>
+</html>
