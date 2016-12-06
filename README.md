@@ -23,7 +23,7 @@ Launch a new Live Video (but do not go live)
 Open OBS and paste in FB Live Stream Key (see instructions here: https://socialwall.me/en/capture-stream-in-real-time-facebook-live-reactions/)
 
 **Step 6:** 
-Select BrowserSource and set to the index.html file
+Select BrowserSource and set to the index.html file. Set the Width to 1280 - Height to 720 - Clear out the CSS.
 
 **Step 7:** 
 Start Streaming
