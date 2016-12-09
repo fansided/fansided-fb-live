@@ -24,7 +24,7 @@
 		}
 		#wrap{
 			position: relative;
-            background: #073759 url('fandom250_FBLive_cubs-cowboys.png') top center no-repeat; /* IMAGE NAME HERE */
+            background: #073759 url('FBLivePoll_Steelers_Packers_Fandom250.png') top center no-repeat; /* IMAGE NAME HERE */
             background-size: contain;
             margin: 0px auto;
 			width: 1280px;
@@ -73,29 +73,28 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.16.6/lodash.min.js"></script>
 <script>
 "use strict";
-var access_token = 'EAACEdEose0cBAMXX2teBz67Am7mlzZAGpwZCSgToKjri34ME0RUxUjGWE3UjzKyFHIpbMIwf69SdxZBZB3umMgdcgafVIZBJuXJepFrG8Vqkxbo1ayjTq0A3L9BtszQ3eEZBtpRB2vLVk10O5MwsRfw2f7VzNTSsZCTjyZAhIZCQUZAAZDZD'; //Paste your Access Token here
-var pageID = '499499086744737'; //Paste your Facebook Page ID here
-var postID = '1461268290567807'; //Paste your live's Post ID here
+var access_token = 'EAACEdEose0cBAHxZAGvHobZBbTbYzzJQmPAnayYhbMpXxTeTaDZBQ6TeJ8ROLsldzfAf4SAfPKX9CYaTSt0znFz60pCYkZCLxJ1iSOWg7oP7NN6IctLGDUvvUlVYxRmIGPKFYgib45grFUZBrEGGT4lNOBX0NTb81X8HuGYwVFgZDZD'; //Paste your Access Token here
+var postID = '1137842179598068'; //Paste your live's Post ID here
 
 var refreshTime = 5; // in seconds
 var defaultCount = 0; // default count to start with
 
-var reactions = ['LIKE', 'LOVE'].map(function (e) {
-    var code = 'reactions_' + e.toLowerCase();
-    return 'reactions.type(' + e + ').limit(0).summary(total_count).as(' + code + ')'
-}).join(',');
 
 var	v1 = $('.likes'),
 	v2 = $('.love');
 
 function refreshCounts() {
-        var url = 'https://graph.facebook.com/v2.8/?ids=' + pageID + "_" + postID + '&fields=' + reactions + '&access_token=' + access_token;
+		var url = 'https://graph.facebook.com/v2.8/' + postID + '/video_insights/total_video_reactions_by_type_total?access_token=' + access_token;
         console.log(url);
 	$.getJSON(url, function(res){
-		console.log(res);
-		v1.text(defaultCount + res[pageID+"_"+postID].reactions_like.summary.total_count);
-		v2.text(defaultCount + res[pageID+"_"+postID].reactions_love.summary.total_count);
+		//console.log(res.data[0]);
+		v1.text(numberWithCommas(defaultCount + res.data[0].values[0].value.like));
+		v2.text(numberWithCommas(defaultCount + res.data[0].values[0].value.love));
 	});
+}
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 setInterval(refreshCounts, refreshTime * 1000);
