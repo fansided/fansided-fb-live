@@ -93,9 +93,13 @@ function refreshCounts() {
         console.log(url);
 	$.getJSON(url, function(res){
 		console.log(res);
-		v1.text(defaultCount + res[pageID+"_"+postID].reactions_like.summary.total_count);
-		v2.text(defaultCount + res[pageID+"_"+postID].reactions_love.summary.total_count);
+		v1.text(numberWithCommas(defaultCount + res[pageID+"_"+postID].reactions_like.summary.total_count));
+		v2.text(numberWithCommas(defaultCount + res[pageID+"_"+postID].reactions_love.summary.total_count));
 	});
+}
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 setInterval(refreshCounts, refreshTime * 1000);
