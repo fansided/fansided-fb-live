@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Facebook Reactions</title>
+	<link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
+
+	<style>
+		html {
+		  box-sizing: border-box;
+          width: 100%;
+          height: 100%;
+		}
+		*, *:before, *:after {
+		  box-sizing: inherit;
+		}
+		body{
+			margin: 0;
+            background: #073759; /* IMAGE NAME HERE */
+            color: #FFF;
+            width: 100%;
+            height: 100%;
+            font-family: "Titillium Web",Arial,sans-serif;
+		}
+		#wrap{
+			position: relative;
+            background: #073759 url('FS_FBLive_Poll_Four-SuperBowl.png') top center no-repeat; /* IMAGE NAME HERE */
+            background-size: contain;
+            margin: 0px auto;
+			width: 1280px;
+			height: 720px;
+		}
+		.cover{
+			padding: 20px 80px;
+			position: absolute;
+			width: 1280px;
+			height: 720px;
+			top: 0;
+			left: 0;
+			z-index: 10;
+		}
+        .tc { text-align: center; font-size: 3rem; font-weight: bold; color #000;}
+        .wf { 
+		    width: 22%;
+		    height: 100px;
+		    font-weight: 600;
+		    font-size: 74px;
+		    line-height: 1.5;
+		    text-align: center;
+		}
+        .likes {
+		    position: absolute;
+		    bottom: 52px;
+		    left: 50px;
+        }
+
+        .love {
+		    position: absolute;
+		    bottom: 52px;
+		    left: 350px;
+        }
+        .haha {
+		    position: absolute;
+		    bottom: 52px;
+		    left: 650px;
+        }
+
+        .wow {
+		    position: absolute;
+		    bottom: 52px;
+		    left: 950px;
+        }
+
+	</style>
+</head>
+<body>
+
+	<div id="wrap">
+		<div class="tc wf likes"></div>
+	    <div class="tc wf love"></div>
+	    <div class="tc wf haha"></div>
+	    <div class="tc wf wow"></div>
+	</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.16.6/lodash.min.js"></script>
+<script>
+"use strict";
+var access_token = 'EAACEdEose0cBABUUJ8a12uLnJczknPZCBL7SFtxXxKfOR9ZBg6N38EqhpLQu0Vg0Ac6S5u94RHhnWS1DMtUtKJ6uRrpR0k1NsMWWO5tWZCFzuWsbvvoefcRGDeeZChr3ZCGeXW5alQ9v83VZCQd2GnJ2WFZC8X7ZCo1rtBIP6WkEKAZDZD'; //Paste your Access Token here
+var pageID = '108254959223467'; //Paste your Facebook Page ID here
+var postID = '1169863503062602'; //Paste your live's Post ID here
+
+var refreshTime = 5; // in seconds
+var defaultCount = 0; // default count to start with
+
+var reactions = ['LIKE', 'LOVE','HAHA','WOW'].map(function (e) {
+    var code = 'reactions_' + e.toLowerCase();
+    return 'reactions.type(' + e + ').limit(0).summary(total_count).as(' + code + ')'
+}).join(',');
+
+var	v1 = $('.likes'),
+	v2 = $('.love'),
+	v3 = $('.haha'),
+	v4 = $('.wow');
+		
+function refreshCounts() {
+        var url = 'https://graph.facebook.com/v2.8/?ids=' + pageID + "_" + postID + '&fields=' + reactions + '&access_token=' + access_token;
+        console.log(url);
+	$.getJSON(url, function(res){
+		console.log(res);
+		v1.text(numberWithCommas(defaultCount + res[pageID+"_"+postID].reactions_like.summary.total_count));
+		v2.text(numberWithCommas(defaultCount + res[pageID+"_"+postID].reactions_love.summary.total_count));
+		v3.text(numberWithCommas(defaultCount + res[pageID+"_"+postID].reactions_haha.summary.total_count));
+		v4.text(numberWithCommas(defaultCount + res[pageID+"_"+postID].reactions_wow.summary.total_count));
+	});
+}
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+setInterval(refreshCounts, refreshTime * 1000);
+refreshCounts();
+</script>
+
+</body>
+</html>
