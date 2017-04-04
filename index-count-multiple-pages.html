@@ -24,7 +24,7 @@
 		}
 		#wrap{
 			position: relative;
-            background: #073759 url('FS_FBLive_Poll_Four-SuperBowl.png') top center no-repeat; /* IMAGE NAME HERE */
+            background: #073759 url('fandom250_FBLive_cubs-cowboys.png') top center no-repeat; /* IMAGE NAME HERE */
             background-size: contain;
             margin: 0px auto;
 			width: 1280px;
@@ -41,34 +41,23 @@
 		}
         .tc { text-align: center; font-size: 3rem; font-weight: bold; color #000;}
         .wf { 
-		    width: 22%;
-		    height: 100px;
-		    font-weight: 600;
-		    font-size: 74px;
-		    line-height: 1.5;
-		    text-align: center;
+	        width: 30%;
+			height: 100px;
+			font-weight: 600;
+		    font-size: 90px;
+		    line-height: 1;
+		    text-align: left;
 		}
         .likes {
 		    position: absolute;
 		    bottom: 52px;
-		    left: 50px;
+		    left: 253px;
         }
 
         .love {
 		    position: absolute;
 		    bottom: 52px;
-		    left: 350px;
-        }
-        .haha {
-		    position: absolute;
-		    bottom: 52px;
-		    left: 650px;
-        }
-
-        .wow {
-		    position: absolute;
-		    bottom: 52px;
-		    left: 950px;
+		    left: 886px;
         }
 
 	</style>
@@ -78,41 +67,67 @@
 	<div id="wrap">
 		<div class="tc wf likes"></div>
 	    <div class="tc wf love"></div>
-	    <div class="tc wf haha"></div>
-	    <div class="tc wf wow"></div>
 	</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.16.6/lodash.min.js"></script>
 <script>
 "use strict";
+//FanSided
 var access_token = 'EAACEdEose0cBAKR9btrpi1fIIpmyaqpVLvguP7ZAd0eTHAUvRjZBqZCAM7D4VacI4SbcZBsVZCUKFQG4HDOWWZAkR4sxPsAc3FMHXTRl6CNP2AAaTPs6FJXDpw3UytESqhiUOX7JSZCmxjVRxE2QzxWXon8iRSZBZAlCzvDf3OEZAMDAZDZD'; //Paste your Access Token here
 var pageID = '108254959223467'; //Paste your Facebook Page ID here
 var postID = '1173536226028663'; //Paste your live's Post ID here
 
+//NFLSZ
+var access_token_2 = 'EAACEdEose0cBAGz4lFLpGuVXifZCfdLxSxPOJCVqZAhi6Tn8gR834PwgIZBsCDeTZCUzv8UGOGMdleMLV9npl0p2wKnZBdlh7sYErt4dZBcJMaZCZBeGeZAJq2h3UVER9ySabpQXwAZBEcZCC6PZBvLyVrRgWjiBqSCYG3845Vpc3YzE5gZDZD'; //Paste your Access Token here
+var pageID_2 = '224077290945589'; //Paste your Facebook Page ID here
+var postID_2 = '1173536226028663'; //Paste your live's Post ID here
+
+/*
+var access_token_3 = 'EAACEdEose0cBAMXX2teBz67Am7mlzZAGpwZCSgToKjri34ME0RUxUjGWE3UjzKyFHIpbMIwf69SdxZBZB3umMgdcgafVIZBJuXJepFrG8Vqkxbo1ayjTq0A3L9BtszQ3eEZBtpRB2vLVk10O5MwsRfw2f7VzNTSsZCTjyZAhIZCQUZAAZDZD'; //Paste your Access Token here
+var pageID_3 = '499499086744737'; //Paste your Facebook Page ID here
+var postID_3 = '1169863503062602'; //Paste your live's Post ID here*/
+
 var refreshTime = 5; // in seconds
 var defaultCount = 0; // default count to start with
+var defaultLikeCount = 0;
+var defaultLoveCount = 0;
 
-var reactions = ['LIKE', 'LOVE','HAHA','WOW'].map(function (e) {
+var reactions = ['LIKE', 'LOVE'].map(function (e) {
     var code = 'reactions_' + e.toLowerCase();
     return 'reactions.type(' + e + ').limit(0).summary(total_count).as(' + code + ')'
 }).join(',');
 
 var	v1 = $('.likes'),
-	v2 = $('.love'),
-	v3 = $('.haha'),
-	v4 = $('.wow');
-		
+	v2 = $('.love');
+
 function refreshCounts() {
         var url = 'https://graph.facebook.com/v2.8/?ids=' + pageID + "_" + postID + '&fields=' + reactions + '&access_token=' + access_token;
-        console.log(url);
+        var url2 = 'https://graph.facebook.com/v2.8/?ids=' + pageID_2 + "_" + postID + '&fields=' + reactions + '&access_token=' + access_token;
+        //var url3 = 'https://graph.facebook.com/v2.8/?ids=' + pageID_3 + "_" + postID_3 + '&fields=' + reactions + '&access_token=' + access_token_3;
+
+    console.log(url);
 	$.getJSON(url, function(res){
 		console.log(res);
-		v1.text(numberWithCommas(defaultCount + res[pageID+"_"+postID].reactions_like.summary.total_count));
-		v2.text(numberWithCommas(defaultCount + res[pageID+"_"+postID].reactions_love.summary.total_count));
-		v3.text(numberWithCommas(defaultCount + res[pageID+"_"+postID].reactions_haha.summary.total_count));
-		v4.text(numberWithCommas(defaultCount + res[pageID+"_"+postID].reactions_wow.summary.total_count));
+		defaultLikeCount = res[pageID+"_"+postID].reactions_like.summary.total_count;
+		defaultLoveCount = res[pageID+"_"+postID].reactions_love.summary.total_count;
 	});
+
+	console.log(url2);
+	$.getJSON(url2, function(res){
+		console.log(res);
+		defaultLikeCount = defaultLikeCount + res[pageID_2+"_"+postID].reactions_like.summary.total_count;
+		defaultLoveCount = defaultLoveCount + res[pageID_2+"_"+postID].reactions_love.summary.total_count;
+	});
+	
+	/*$.getJSON(url3, function(res3){
+		console.log(res);
+		defaultLikeCount = defaultLikeCount + res3[pageID_3+"_"+postID_3].reactions_like.summary.total_count;
+		defaultLoveCount = defaultLoveCount + res3[pageID_3+"_"+postID_3].reactions_love.summary.total_count;
+	});	*/
+	
+	v1.text(numberWithCommas(defaultLikeCount));
+	v2.text(numberWithCommas(defaultLoveCount));
 }
 
 function numberWithCommas(x) {

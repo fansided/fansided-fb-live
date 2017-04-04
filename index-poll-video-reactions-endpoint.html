@@ -24,7 +24,7 @@
 		}
 		#wrap{
 			position: relative;
-            background: #073759 url('FS_FBLive_Poll_Four-SuperBowl.png') top center no-repeat; /* IMAGE NAME HERE */
+            background: #073759 url('fandom250_FBLive_cubs-cowboys.png') top center no-repeat; /* IMAGE NAME HERE */
             background-size: contain;
             margin: 0px auto;
 			width: 1280px;
@@ -41,34 +41,23 @@
 		}
         .tc { text-align: center; font-size: 3rem; font-weight: bold; color #000;}
         .wf { 
-		    width: 22%;
-		    height: 100px;
-		    font-weight: 600;
-		    font-size: 74px;
-		    line-height: 1.5;
-		    text-align: center;
+	        width: 30%;
+			height: 100px;
+			font-weight: 600;
+		    font-size: 90px;
+		    line-height: 1;
+		    text-align: left;
 		}
         .likes {
 		    position: absolute;
 		    bottom: 52px;
-		    left: 50px;
+		    left: 253px;
         }
 
         .love {
 		    position: absolute;
 		    bottom: 52px;
-		    left: 350px;
-        }
-        .haha {
-		    position: absolute;
-		    bottom: 52px;
-		    left: 650px;
-        }
-
-        .wow {
-		    position: absolute;
-		    bottom: 52px;
-		    left: 950px;
+		    left: 886px;
         }
 
 	</style>
@@ -78,8 +67,6 @@
 	<div id="wrap">
 		<div class="tc wf likes"></div>
 	    <div class="tc wf love"></div>
-	    <div class="tc wf haha"></div>
-	    <div class="tc wf wow"></div>
 	</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -93,25 +80,16 @@ var postID = '1173536226028663'; //Paste your live's Post ID here
 var refreshTime = 5; // in seconds
 var defaultCount = 0; // default count to start with
 
-var reactions = ['LIKE', 'LOVE','HAHA','WOW'].map(function (e) {
-    var code = 'reactions_' + e.toLowerCase();
-    return 'reactions.type(' + e + ').limit(0).summary(total_count).as(' + code + ')'
-}).join(',');
-
 var	v1 = $('.likes'),
-	v2 = $('.love'),
-	v3 = $('.haha'),
-	v4 = $('.wow');
-		
+	v2 = $('.love');
+
 function refreshCounts() {
-        var url = 'https://graph.facebook.com/v2.8/?ids=' + pageID + "_" + postID + '&fields=' + reactions + '&access_token=' + access_token;
+        var url = 'https://graph.facebook.com/v2.8/' + postID + '/video_insights/total_video_reactions_by_type_total?access_token=' + access_token;
         console.log(url);
 	$.getJSON(url, function(res){
 		console.log(res);
-		v1.text(numberWithCommas(defaultCount + res[pageID+"_"+postID].reactions_like.summary.total_count));
-		v2.text(numberWithCommas(defaultCount + res[pageID+"_"+postID].reactions_love.summary.total_count));
-		v3.text(numberWithCommas(defaultCount + res[pageID+"_"+postID].reactions_haha.summary.total_count));
-		v4.text(numberWithCommas(defaultCount + res[pageID+"_"+postID].reactions_wow.summary.total_count));
+		v1.text(numberWithCommas(defaultCount + res.data[0].values[0].value.like));
+		v2.text(numberWithCommas(defaultCount + res.data[0].values[0].value.love));
 	});
 }
 
